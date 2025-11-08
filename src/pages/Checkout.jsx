@@ -168,7 +168,7 @@ export default function Checkout(){
           )}
 
           <h4>Pagamento</h4>
-          <div style={{display:"flex", gap:12}}>
+          <div style={{display:"grid", gap:12}}>
             <label><input type="radio" name="pay" value="pix" checked={tipoPagamento==="pix"} onChange={()=>setTipoPagamento("pix")} /> Pix</label>
             <label><input type="radio" name="pay" value="cartao" checked={tipoPagamento==="cartao"} onChange={()=>setTipoPagamento("cartao")} /> Cartão</label>
           </div>

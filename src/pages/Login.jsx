@@ -64,7 +64,7 @@ export default function Login() {
             onChange={e => setPassword(e.target.value)}
           />
           {error && <div className="error">{error}</div>}
-          <button className="btn" type="submit" disabled={loading}>
+          <button className="btn" style={{ marginLeft: "16px" }} type="submit" disabled={loading}>
             {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>

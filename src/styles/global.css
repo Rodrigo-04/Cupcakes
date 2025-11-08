@@ -78,7 +78,7 @@ html,body,#root{
   background:var(--accent-pink);
 }
 .input{
-  width:100%;
+  width: calc(98%);
   padding:10px;
   border-radius:8px;
   border:1px solid #ddd;
