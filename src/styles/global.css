@@ -1,0 +1,141 @@
+:root{
+  --bg: #FDF4E1;
+  --accent-blue: #A2B9E2;
+  --accent-pink: #EB8F97;
+  --text: #000000;
+  --radius: 10px;
+  --card-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  font-family: 'Poppins', sans-serif;
+}
+
+html,body,#root{
+  height:100%;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.container{
+  max-width:1000px;
+  margin:32px auto;
+  padding:24px;
+}
+
+.card{
+  background:white;
+  border-radius:var(--radius);
+  box-shadow:var(--card-shadow);
+  padding:16px;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.brand img{ width:48px; height:48px; object-fit:contain; }
+.nav{ margin-left:auto; display:flex; gap:12px; align-items: center;}
+
+.btn{
+   /* background:var(--accent-blue); */
+   /* background-color: #425A86;
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer; */
+
+
+  background-color: #EC9DA7;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #d98695;
+  transform: scale(1.03);
+}
+
+.btn:active {
+  background-color: #c06c7d;
+  transform: scale(0.98);
+}
+
+.btn.secondary{
+  background:var(--accent-pink);
+}
+.input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  margin:8px 0 16px 0;
+}
+.form{
+  max-width:420px;
+  margin:0 auto;
+}
+.footer{
+  text-align:center;
+  padding:18px 0;
+  color:#333;
+  margin-top:48px;
+}
+.error{
+  color:#b00020;
+  font-size:0.9rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding: 6px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .brand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .input {
+    font-size: 15px;
+  }
+
+  .container .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+}
