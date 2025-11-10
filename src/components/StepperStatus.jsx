@@ -1,11 +1,5 @@
-// src/components/StepperStatus.jsx
 import React from "react";
 
-/*
- Props:
-  - steps: ["Pedido recebido", "Em preparo", ...]
-  - current: string (etapa atual)
-*/
 export default function StepperStatus({ steps, current }) {
   const currentIndex = Math.max(0, steps.findIndex(s => s === current));
   return (

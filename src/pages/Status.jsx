@@ -1,4 +1,3 @@
-// src/pages/Status.jsx
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
@@ -14,20 +13,18 @@ import { observeAuth } from "../services/auth";
 const STEPS = ["Pedido recebido", "Em preparo", "Pronto", "A caminho", "Entregue"];
 
 export default function StatusPage() {
-  const { id } = useParams(); // pode estar ausente
+  const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = React.useState(null);
   const [order, setOrder] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [updating, setUpdating] = React.useState(false);
 
-  // Autenticação
   React.useEffect(() => {
     const unsubAuth = observeAuth(u => setUser(u));
     return () => unsubAuth();
   }, []);
 
-  // Se tiver ID na URL, assina esse pedido
   React.useEffect(() => {
     if (id) {
       const unsub = subscribeOrder(id, o => {
@@ -41,28 +38,15 @@ export default function StatusPage() {
     }
   }, [id]);
 
-  // Se não tiver ID, busca pedido ativo do usuário
-//   React.useEffect(() => {
-//     if (!id && user) {
-//       const unsub = subscribeActiveOrders(user.uid, orders => {
-//         if (orders.length > 0) {
-//           setOrder(orders[0]); // pega o mais recente
-//         }
-//         setLoading(false);
-//       });
-//       return () => unsub();
-//     }
-//   }, [id, user]);
 React.useEffect(() => {
   if (!id && user) {
     const idLocal = localStorage.getItem("pedidoAtivo");
     if (idLocal) {
       navigate(`/status/${idLocal}`, { replace: true });
     } else {
-      // opcional: buscar pedido ativo do Firestore
       const unsub = subscribeActiveOrders(user.uid, orders => {
         if (orders.length > 0) {
-          setOrder(orders[0]); // pega o mais recente
+          setOrder(orders[0]);
         }
         setLoading(false);
       });

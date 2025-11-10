@@ -1,4 +1,3 @@
-// src/pages/About.jsx
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,7 +7,7 @@ export default function About() {
     <div className="container">
       <Header />
       <div className="card" style={{ padding: 24 }}>
-        <h2>Sobre a Cupcakes Cruzeiro</h2>
+        <h2>Sobre a <span style={{ color: "#EC9DA7" }}>Cupcakes</span> <span style={{ color: "#425A86" }}>Cruzeiro</span></h2>
         <p>
           Somos apaixonados por confeitaria artesanal e por criar experiências doces inesquecíveis.
           Fundada em São Paulo, SP, nossa loja nasceu do sonho de levar cupcakes frescos, criativos e deliciosos para todos os momentos especiais.

@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 import React from "react";
 import { FaInstagram, FaFacebook } from "react-icons/fa";
 
@@ -19,20 +18,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-
-// export default function Footer() {
-//     return (
-//         <footer style={{
-//             backgroundColor: "#f8c1d0",
-//             color: "#5a2a27",
-//             textAlign: "center",
-//             padding: "10px 0",
-//             marginTop: "40px",
-//             fontSize: "0.9rem",
-//         }}
-//         >
-//            © {new Date().getFullYear} Cupcakes Cruzeiro - Todos os direitos reservados. 
-//         </footer>
-//     );
-// }

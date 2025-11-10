@@ -14,13 +14,11 @@ export default function Checkout(){
   const [cart, setCart] = React.useState({ IdCarrinho: "", Itens: [] });
   const [loading, setLoading] = React.useState(false);
 
-  // endereco
   const [tipoEndereco, setTipoEndereco] = React.useState("retirar");
   const [logradouro, setLogradouro] = React.useState("");
   const [numero, setNumero] = React.useState("");
   const [apto, setApto] = React.useState("");
 
-  // pagamento
   const [tipoPagamento, setTipoPagamento] = React.useState("pix");
   const [cardNome, setCardNome] = React.useState("");
   const [cardNumero, setCardNumero] = React.useState("");
@@ -53,7 +51,6 @@ export default function Checkout(){
   };
 
   const handleGeneratePix = async () => {
-    // Gerar um payload fictício para o QR (apenas estudo)
     const pixPayload = `cupcakes-cruzeiro|user:${user?.uid}|total:${total.toFixed(2)}|ts:${Date.now()}`;
     try {
       const url = await QRCode.toDataURL(pixPayload, { width: 250 });
@@ -88,12 +85,11 @@ export default function Checkout(){
         const pixObj = await handleGeneratePix();
         pagamentoPayload = {
           qrcodeData: pixObj.qrcodeData,
-          chaveFicticia: "000.000.000-00" // apenas exemplo
+          chaveFicticia: "000.000.000-00"
         };
       } else {
         const v = validateCard();
         if (v) { setError(v); setLoading(false); return; }
-        // Não envie cartão não criptografado em produção; aqui é para estudo
         pagamentoPayload = {
           nomeTitular: cardNome,
           numeroMasked: cardNumero.replace(/\d(?=\d{4})/g, "*"),
@@ -104,22 +100,14 @@ export default function Checkout(){
 
       const enderecoObj = tipoEndereco === "entrega" ? { logradouro, num: numero, apto: apto || null } : null;
 
-      // const res = await createOrder({
-      //   uid: user.uid,
-      //   cart,
-      //   enderecoInfo: { tipoEndereco, endereco: enderecoObj },
-      //   pagamentoInfo: { tipoPagamento, pagamento: pagamentoPayload }
-      // });
-
       const res = await createOrderAndClearCart({
         uid: user.uid,
         enderecoInfo: { tipoEndereco, endereco: enderecoObj },
         pagamentoInfo: { tipoPagamento, pagamento: pagamentoPayload }
       });
 
-      localStorage.setItem("pedidoAtivo", res.id); // salva o ID
+      localStorage.setItem("pedidoAtivo", res.id);
 
-      // redireciona para status do pedido — você pode passar id como param
       navigate(`/status/${res.id}`, { replace: true });
     } catch (err) {
       console.error("Erro ao criar pedido:", err);
@@ -201,40 +189,3 @@ export default function Checkout(){
     </div>
   );
 }
-
-// import { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import { doc, getDoc } from "firebase/firestore";
-// import { db } from "../../services/firebaseConfig";
-
-// export default function StatusPedido() {
-//     const { id } = useParams();
-//     const [pedido, setPedido] = useState(null);
-
-//     useEffect(() => {
-//         const fetchPedido = async () => {
-//             const ref = doc(db, "pedidos", id);
-//             const snap = await getDoc(ref);
-//             if (snap.exists()) setPedido(snap.data());
-//         };
-//         fetchPedido();
-//     }, [id]);
-
-//     if (!pedido) return <p>Carregando pedidos...</p>;
-
-//     return (
-//         <div className="container">
-//             <h2>Status do Pedido</h2>
-//             <p><strong>Status: </strong>{pedido.status}</p>
-//             <p><strong>Entrega: </strong>{pedido.entrega}</p>
-//             <p><strong>Pagamento: </strong>{pedido.pagamento}</p>
-//             <h3>Itens:</h3>
-//             <ul>
-//                 {pedido.itens.map((item, i) => (
-//                     <li key={i}>{item.nome} - R$ {item.preco.toFixed(2)}</li>
-//                 ))}
-//             </ul>
-//             <h3>Total: R$ {pedido.total.toFixed(2)}</h3>
-//         </div>
-//     );
-// }

@@ -36,14 +36,6 @@ export const getClient = async (uid) => {
   return snap.exists() ? snap.data() : null;
 };
 
-// função utilitária para buscar produtos (placeholder)
-// export const getProducts = async () => {
-//   const col = collection(db, "Produto");
-//   const snapshot = await getDocs(col);
-//   return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-// };
-
-
 // BUSCAR produtos (você já tem getProducts, mas com onSnapshot melhor)
 export const subscribeProducts = (callback) => {
   const colRef = collection(db, "Produto");
@@ -79,7 +71,6 @@ export const addOrIncrementCartItem = async (uid, product) => {
   const ref = doc(db, "Carrinho", uid);
   const snap = await getDoc(ref);
   if (!snap.exists()) {
-    // cria novo carrinho com o item
     const cart = {
       IdCarrinho: uid,
       Itens: [
@@ -123,58 +114,11 @@ export const removeCartItem = async (uid, idProduto) => {
   await updateCartItemQuantity(uid, idProduto, 0);
 };
 
-// cria o pedido na coleção Pedido com os dados passados
-// export const createOrder = async ({ uid, cart, enderecoInfo, pagamentoInfo }) => {
-//   // cart: { IdCarrinho, Itens: [...] }
-//   // enderecoInfo: { tipoEndereco: 'retirar'|'entrega', endereco: { logradouro, num, apto } | null }
-//   // pagamentoInfo: { tipoPagamento: 'pix'|'cartao', pagamento: {...} }
-
-//   const pedidosCol = collection(db, "Pedido");
-//   const payload = {
-//     IdCarrinho: cart.IdCarrinho || uid,
-//     IdCliente: uid,
-//     Itens: cart.Itens || [],
-//     Total: (cart.Itens || []).reduce((s, it) => s + (Number(it.Valor || 0) * (it.quantidade || 0)), 0),
-//     tipoEndereco: enderecoInfo.tipoEndereco,
-//     Endereco: enderecoInfo.endereco || null,
-//     tipoPagamento: pagamentoInfo.tipoPagamento,
-//     Pagamento: [pagamentoInfo.pagamento],
-//     Status: "Pendente",
-//     data: serverTimestamp()
-//   };
-
-//   const docRef = await addDoc(pedidosCol, payload);
-//   // opcional: gravar endereço/pagamento no documento Cliente como histórico
-//   try {
-//     const clientRef = doc(db, "Cliente", uid);
-//     const clientSnap = await getDoc(clientRef);
-//     if (clientSnap.exists()) {
-//       await updateDoc(clientRef, {
-//         enderecos: arrayUnion(enderecoInfo.endereco || null),
-//         pagamentos: arrayUnion(pagamentoInfo.pagamento)
-//       });
-//     }
-//   } catch (err) {
-//     // se falhar, não bloqueia criação do pedido
-//     console.warn("Não foi possível atualizar Cliente com histórico:", err);
-//   }
-
-//   return { id: docRef.id, ...payload };
-// };
-
-
-/*
-  payload:
-    uid: id do usuário
-    enderecoInfo: { tipoEndereco, endereco }
-    pagamentoInfo: { tipoPagamento, pagamento }
-*/
 export const createOrderAndClearCart = async ({ uid, enderecoInfo, pagamentoInfo }) => {
   if (!uid) throw new Error("UID necessário");
 
   const cartRef = doc(db, "Carrinho", uid);
   const pedidosCol = collection(db, "Pedido");
-  // cria referência de documento local com id gerado (sem efetuar gravação ainda)
   const newOrderRef = doc(pedidosCol);
 
   // transação: lê o carrinho, cria pedido e zera o carrinho
@@ -202,23 +146,18 @@ export const createOrderAndClearCart = async ({ uid, enderecoInfo, pagamentoInfo
       data: serverTimestamp()
     };
 
-    // grava o pedido
     transaction.set(newOrderRef, payload);
 
-    // zera o carrinho
     transaction.set(cartRef, { IdCarrinho: uid, Itens: [] });
 
     return { id: newOrderRef.id, payload };
   });
-
-  // opcional: atualizar histórico do cliente (fora da transação)
   try {
     const clientRef = doc(db, "Cliente", uid);
     const clientSnap = await getDoc(clientRef);
     if (clientSnap.exists()) {
       const { endereco } = enderecoInfo;
       const pagamento = pagamentoInfo.pagamento;
-      // use updateDoc + arrayUnion aqui se quiser manter histórico (não bloqueante)
       await import("firebase/firestore").then(({ updateDoc, arrayUnion }) =>
         updateDoc(clientRef, {
           enderecos: endereco ? arrayUnion(endereco) : undefined,
@@ -227,11 +166,10 @@ export const createOrderAndClearCart = async ({ uid, enderecoInfo, pagamentoInfo
       );
     }
   } catch (err) {
-    // não bloqueia o fluxo do pedido
     console.warn("Não foi possível atualizar histórico do cliente:", err);
   }
 
-  return result; // { id, payload }
+  return result;
 };
 
 // Assina um pedido por id em tempo real
@@ -254,7 +192,6 @@ export const updateOrderStatus = async (orderId, novoStatus) => {
 // Marca pedido como confirmado pelo cliente (ex: recebimento)
 export const confirmOrderReceived = async (orderId, userId) => {
   const ref = doc(db, "Pedido", orderId);
-  // opcional: registre quem confirmou e timestamp
   await updateDoc(ref, {
     Status: "Entregue",
     entregueConfirmadoPor: userId || null,
