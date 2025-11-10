@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { observeAuth } from "../services/auth";
-import { subscribeCart, getCartOnce } from "../services/db";
+import { subscribeCart } from "../services/db";
 import { createOrderAndClearCart } from "../services/db";
 import QRCode from "qrcode";
 

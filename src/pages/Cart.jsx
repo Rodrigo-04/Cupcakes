@@ -9,7 +9,7 @@ import { observeAuth } from "../services/auth";
 export default function Cart() {
   const [user, setUser] = React.useState(null);
   const [cart, setCart] = React.useState({ IdCarrinho: "", Itens: [] });
-  const [loading, setLoading] = React.useState(true);
+  const [, setLoading] = React.useState(true);
   const navigate = useNavigate();
 
   React.useEffect(() => {

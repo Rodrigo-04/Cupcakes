@@ -8,7 +8,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [user, setUser] = React.useState(null);
   const [count, setCount] = React.useState(0);
-  const [activeOrders, setActiveOrders] = React.useState([]);
+  const [, setActiveOrders] = React.useState([]);
 
   React.useEffect(() => {
     const unsubAuth = observeAuth(u => setUser(u));

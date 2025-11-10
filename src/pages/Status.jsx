@@ -53,7 +53,7 @@ React.useEffect(() => {
       return () => unsub();
     }
   }
-}, [id, user]);
+}, [id, user, navigate]);
 
 
   const calcEta = (ts) => {

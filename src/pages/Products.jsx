@@ -9,7 +9,7 @@ import Footer from "../components/Footer";
 export default function Products() {
   const [produtos, setProdutos] = React.useState([]);
   const [user, setUser] = React.useState(null);
-  const [loadingAdd, setLoadingAdd] = React.useState(false);
+  const [, setLoadingAdd] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
