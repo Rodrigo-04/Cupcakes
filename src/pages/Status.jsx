@@ -138,14 +138,7 @@ React.useEffect(() => {
           <StepperStatus steps={STEPS} current={currentStatus} />
         </div>
 
-        <div className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <div style={{ fontWeight: 700 }}>Ações</div>
-            <div style={{ fontSize: 13, color: "#666" }}>
-              Somente ações de cliente aparecem aqui.
-            </div>
-          </div>
-
+        <div className="card" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
           <div>
             <button
               className="btn"

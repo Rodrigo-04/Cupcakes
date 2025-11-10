@@ -35,7 +35,7 @@ A aplicação estará disponível em **http://localhost:5173**.
 ## 🌐 Acessar a Versão Online
 
 A versão final está publicada no vercel:
-**https://cupcakes-cruzeiro.vercel.app**
+**https://cupcakes-jade.vercel.app**
 
 ---
 
